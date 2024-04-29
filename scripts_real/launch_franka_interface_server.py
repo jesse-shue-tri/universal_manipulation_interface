@@ -35,10 +35,16 @@ class FrankaInterface:
 
     def update_desired_ee_pose(self, pose):
         pose = np.asarray(pose)
-        self.robot.update_desired_ee_pose(
-            position=torch.Tensor(pose[:3]),
-            orientation=torch.Tensor(st.Rotation.from_rotvec(pose[3:]).as_quat())
-        )
+        try:
+            self.robot.update_desired_ee_pose(
+                position=torch.Tensor(pose[:3]),
+                orientation=torch.Tensor(st.Rotation.from_rotvec(pose[3:]).as_quat())
+            )
+        except:
+            self.robot.start_cartesian_impedance(
+                Kx=torch.Tensor(self.Kx),
+                Kxd=torch.Tensor(self.Kxd)
+            )
 
     def terminate_current_policy(self):
         self.robot.terminate_current_policy()

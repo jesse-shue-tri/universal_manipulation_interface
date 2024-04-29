@@ -86,6 +86,8 @@ def main(session_dir):
                 if mp4_path.is_symlink():
                     print(f"Skipping {mp4_path.name}, already moved.")
                     continue
+                
+                # print(f'mp4_path: {mp4_path}')
 
                 start_date = mp4_get_start_datetime(str(mp4_path))
                 meta = list(et.get_metadata(str(mp4_path)))[0]

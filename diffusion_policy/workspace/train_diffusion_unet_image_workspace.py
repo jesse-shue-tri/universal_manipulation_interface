@@ -33,6 +33,8 @@ from accelerate import Accelerator
 
 OmegaConf.register_new_resolver("eval", eval, replace=True)
 
+
+# Used by default
 class TrainDiffusionUnetImageWorkspace(BaseWorkspace):
     include_keys = ['global_step', 'epoch']
     exclude_keys = tuple()
@@ -102,6 +104,7 @@ class TrainDiffusionUnetImageWorkspace(BaseWorkspace):
         # resume training
         if cfg.training.resume:
             lastest_ckpt_path = self.get_checkpoint_path()
+            print(f'lastest_ckpt_path: {lastest_ckpt_path}')
             if lastest_ckpt_path.is_file():
                 accelerator.print(f"Resuming from checkpoint {lastest_ckpt_path}")
                 self.load_checkpoint(path=lastest_ckpt_path)
@@ -132,6 +135,8 @@ class TrainDiffusionUnetImageWorkspace(BaseWorkspace):
         if cfg.training.use_ema:
             self.ema_model.set_normalizer(normalizer)
 
+        # print('1')
+
         # configure lr scheduler
         lr_scheduler = get_scheduler(
             cfg.training.lr_scheduler,
@@ -144,6 +149,8 @@ class TrainDiffusionUnetImageWorkspace(BaseWorkspace):
             # however huggingface diffusers steps it every batch
             last_epoch=self.global_step-1
         )
+
+        # print('2')
 
         # configure ema
         ema: EMAModel = None

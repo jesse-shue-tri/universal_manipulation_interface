@@ -17,13 +17,17 @@ class BaseWorkspace:
     def __init__(self, cfg: OmegaConf, output_dir: Optional[str]=None):
         self.cfg = cfg
         self._output_dir = output_dir
+        print(f'self._output_dir: {self._output_dir}')
         self._saving_thread = None
 
     @property
     def output_dir(self):
         output_dir = self._output_dir
         if output_dir is None:
+            print(f'HydraConfig.get().runtime.output_dir: {HydraConfig.get().runtime.output_dir}')
             output_dir = HydraConfig.get().runtime.output_dir
+        # Temporary lol
+        # return '/home/panda/universal_manipulation_interface/data/outputs/2024.04.24/18.54.04_train_diffusion_unet_timm_umi'
         return output_dir
     
     def run(self):
@@ -71,6 +75,7 @@ class BaseWorkspace:
         return str(path.absolute())
     
     def get_checkpoint_path(self, tag='latest'):
+        print(f'self.output_dir: {self.output_dir}')
         return pathlib.Path(self.output_dir).joinpath('checkpoints', f'{tag}.ckpt')
 
     def load_payload(self, payload, exclude_keys=None, include_keys=None, **kwargs):

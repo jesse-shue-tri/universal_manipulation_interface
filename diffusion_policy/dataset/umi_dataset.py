@@ -117,6 +117,8 @@ class UmiDataset(BaseDataset):
             # solve down_sample_steps
             down_sample_steps = shape_meta['obs'][key]['down_sample_steps']
             key_down_sample_steps[key] = down_sample_steps
+        
+        # print(f'key_down_sample_steps: {key_down_sample_steps}')  task.obs_down_sample_steps=1 makes all these values 1 instead of 3
 
         # solve action
         key_horizon['action'] = shape_meta['action']['horizon']
